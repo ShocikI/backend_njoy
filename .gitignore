@@ -6,3 +6,4 @@ env
 .env
 config.txt
 venv
+njoy_backend/migrations

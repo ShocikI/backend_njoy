@@ -1,4 +1,4 @@
-from models.Categories import Categories
+from njoy_backend.models.Categories import Categories
 from rest_framework import serializers
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):

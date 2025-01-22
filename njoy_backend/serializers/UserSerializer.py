@@ -1,4 +1,4 @@
-from models.User import User
+from njoy_backend.models.User import User
 from rest_framework import serializers
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

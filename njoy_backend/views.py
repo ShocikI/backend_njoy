@@ -1,8 +1,8 @@
 from rest_framework import viewsets
-from serializers.UserSerializer import UserSerializer, User
-from serializers.EventSerializer import EventSerializer, Event
-from serializers.CategorySerializer import CategorySerializer, Categories
-from serializers.LinkSerializer import (
+from njoy_backend.serializers.UserSerializer import UserSerializer, User
+from njoy_backend.serializers.EventSerializer import EventSerializer, Event
+from njoy_backend.serializers.CategorySerializer import CategorySerializer, Categories
+from njoy_backend.serializers.LinkSerializer import (
     LinkType, UserLink, EventLink, LinkTypeSerializer, UserLinkSerializer, EventLinkSerializer, 
 )
 

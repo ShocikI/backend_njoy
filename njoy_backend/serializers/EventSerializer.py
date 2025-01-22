@@ -1,4 +1,4 @@
-from models.Event import Event
+from njoy_backend.models.Event import Event
 from rest_framework import serializers
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):

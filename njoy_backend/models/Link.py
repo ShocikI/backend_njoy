@@ -1,6 +1,6 @@
 from django.db import models
-from User import User
-from Event import Event
+from njoy_backend.models.User import User
+from njoy_backend.models.Event import Event
 
 class LinkType(models.Model):
     title = models.CharField(max_length=32, blank=False, unique=True)
@@ -12,7 +12,7 @@ class LinkType(models.Model):
     def __str__(self):
         return f"{self.title}"
     
-    
+
 class UserLink(models.Model):
     user = models.ForeignKey(User, verbose_name=("User"), on_delete=models.CASCADE, blank=False)
     type = models.ForeignKey(LinkType, verbose_name=("Link type"), on_delete=models.CASCADE, blank=False)

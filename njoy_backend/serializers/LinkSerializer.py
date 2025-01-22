@@ -1,4 +1,4 @@
-from models.Link import UserLink, EventLink, LinkType
+from njoy_backend.models.Link import UserLink, EventLink, LinkType
 from rest_framework import serializers
 
 class LinkTypeSerializer(serializers.HyperlinkedModelSerializer):

@@ -1,6 +1,6 @@
 from django.contrib.gis.db import models
-from .User import User
-from .Categories import Categories
+from njoy_backend.models.User import User
+from njoy_backend.models.Categories import Categories
 
 class Event(models.Model):
     title = models.CharField(max_length=128, blank=False)
