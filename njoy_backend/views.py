@@ -1,32 +1,60 @@
 from rest_framework import viewsets
-from njoy_backend.serializers.UserSerializer import UserSerializer, User
-from njoy_backend.serializers.EventSerializer import EventSerializer, Event
-from njoy_backend.serializers.CategorySerializer import CategorySerializer, Categories
-from njoy_backend.serializers.LinkSerializer import (
-    LinkType, UserLink, EventLink, LinkTypeSerializer, UserLinkSerializer, EventLinkSerializer, 
+from rest_framework.response import Response
+from datetime import datetime
+
+from njoy_backend.serializers import (
+    UserSerializer, User, 
+    EventSerializer, Event, 
+    CategorySerializer, Categories,
+    LinkTypeSerializer, LinkType, 
+    UserLinkSerializer, UserLink, 
+    EventLinkSerializer, EventLink, 
 )
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
+    queryset = User.objects.all()
 
-class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
+class UpcommingEventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
+    queryset = Event.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        today = datetime.now()
+        try:
+            categoryIds = self.request.query_params.getlist('category')
+            if categoryIds:
+                queryset = Event.objects.filter(date__gt=today).filter(category__in=categoryIds)
+        except:
+            queryset = Event.objects.filter(date__gt=today)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+class ArchiveEventViewSet(viewsets.ModelViewSet):
+    serializer_class = EventSerializer
+    queryset = Event.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        today = datetime.now()
+        queryset = Event.objects.filter(date__lt=today)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
     
 class LinkTypeViewSet(viewsets.ModelViewSet):
-    queryset = LinkType.objects.all()
     serializer_class = LinkTypeSerializer
+    queryset = LinkType.objects.all()
 
 class EventLinkViewSet(viewsets.ModelViewSet):
-    queryset = EventLink.objects.all()
     serializer_class = EventLinkSerializer
+    queryset = EventLink.objects.all()
 
 class UserLinkViewSet(viewsets.ModelViewSet):
-    queryset = UserLink.objects.all()
     serializer_class = UserLinkSerializer
+    queryset = UserLink.objects.all()
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Categories.objects.all()
     serializer_class = CategorySerializer
+    queryset = Categories.objects.all()
