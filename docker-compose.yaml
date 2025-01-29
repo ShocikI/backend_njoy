@@ -21,7 +21,9 @@ services:
       - db
     networks:
       - njoy_network
-      
+    volumes:
+      - .:/.
+
 networks:
   njoy_network:
 
