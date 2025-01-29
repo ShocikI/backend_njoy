@@ -1,9 +1,6 @@
 from rest_framework import serializers
 
-from njoy_backend.models.User import User
-from njoy_backend.models.Event import Event
-from njoy_backend.models.Categories import Categories
-from njoy_backend.models.Link import UserLink, EventLink, LinkType
+from njoy_backend.models import User, Event, Categories, UserLink, EventLink, LinkType
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,15 +8,24 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = '__all__'
 
-class EventSerializer(serializers.HyperlinkedModelSerializer):
+class UserForEventSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Event
-        fields = ("title", "date", "address", "location", "description", "price", "avaliable_places", "owner", "category", "image")
+        model = User
+        fields = ("username", "avatar")
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Categories
-        fields = '__all__'
+        fields = ('title',)
+
+class EventSerializer(serializers.HyperlinkedModelSerializer):
+    owner = UserForEventSerializers(many=False)
+    category = CategorySerializer(many=False)
+    
+    class Meta:
+        model = Event
+        fields = ("title", "date", "address", "location", "description", "price", "avaliable_places", "owner", "category", "image")
+
 
 class LinkTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
