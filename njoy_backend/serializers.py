@@ -14,8 +14,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Event
-        # fields = ("title", "date", "address", "location", "description", "price", "avaliable_places", "owner", "category", "image")
-        fields = '__all__'
+        fields = ("title", "date", "address", "location", "description", "price", "avaliable_places", "owner", "category", "image")
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
