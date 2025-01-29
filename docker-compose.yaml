@@ -22,7 +22,7 @@ services:
     networks:
       - njoy_network
     volumes:
-      - .:/backend
+      - .:/api
 
 networks:
   njoy_network:
