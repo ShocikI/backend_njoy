@@ -18,15 +18,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class UpcommingEventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
-    queryset = Event.objects.all()
 
     def list(self, request, *args, **kwargs):
         today = datetime.now()
-        try:
-            categoryIds = self.request.query_params.getlist('category')
-            if categoryIds:
-                queryset = Event.objects.filter(date__gt=today).filter(category__in=categoryIds)
-        except:
+        categoryIds = self.request.query_params.getlist('category')
+        if categoryIds:
+            queryset = Event.objects.filter(date__gt=today).filter(category__in=categoryIds)
+        else:
             queryset = Event.objects.filter(date__gt=today)
 
         serializer = self.get_serializer(queryset, many=True)
@@ -34,11 +32,14 @@ class UpcommingEventViewSet(viewsets.ModelViewSet):
 
 class ArchiveEventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
-    queryset = Event.objects.all()
 
     def list(self, request, *args, **kwargs):
         today = datetime.now()
-        queryset = Event.objects.filter(date__lt=today)
+        categoryIds = self.request.query_params.getlist('category')
+        if categoryIds:
+            queryset = Event.objects.filter(date__lt=today).filter(category__in=categoryIds)
+        else:
+            queryset = Event.objects.filter(date__lt=today)
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
