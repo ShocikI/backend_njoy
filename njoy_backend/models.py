@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.gis.db import models as geoModels
 from django.contrib.auth.models import User as AuthUser
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 class LinkType(models.Model):
     title = models.CharField(max_length=32, blank=False, unique=True)
@@ -52,7 +54,12 @@ class User(AuthUser):
         verbose_name = ("User")
         verbose_name_plural = ("Users")
 
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
+        
 class Event(geoModels.Model):
     title = geoModels.CharField(max_length=128, blank=False)
     owner = geoModels.ForeignKey(User, verbose_name=("Owner"), on_delete=geoModels.CASCADE, blank=False)

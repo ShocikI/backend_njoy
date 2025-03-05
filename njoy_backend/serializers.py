@@ -37,9 +37,12 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         model = Event
         fields = ("title", "date", "address", "location", "description", "price", "avaliable_places", "owner", "category", "links", "image")
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    links = UserLinkSerializer(many=True)
-
+class RegistrationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'description', 'avatar', 'links')
+        fields = ('username', 'email', 'password')
+        extra_kwargs = {"password": { 'required': True, "write_only": True } }
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user
