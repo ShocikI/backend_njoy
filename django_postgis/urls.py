@@ -18,10 +18,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
+from rest_framework.authtoken.views import obtain_auth_token
 
 from njoy_backend import urls
+from django_postgis.views import Logout
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include(urls))
+    path("api/", include(urls)),
+    path("login/", obtain_auth_token),
+    path("logout/", Logout.as_view())
 ]
