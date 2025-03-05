@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
-from os import getenv
+from os import getenv, urandom
+from base64 import urlsafe_b64encode
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,6 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = getenv('SECRET_KEY')
+SECRET_KEY_AES = urlsafe_b64encode(urandom(32))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -76,7 +78,7 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'django_postgis.authentication.EncryptedTokenAuthentication',
     ]
 }
 
