@@ -21,7 +21,7 @@ from njoy_backend import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)            # Test URL
 router.register(r'events', views.UpcommingEventViewSet, basename="events")
-router.register(r'archive/events', views.ArchiveEventViewSet, basename='archive/events')
+router.register(r'events/previous', views.PreviousEventViewSet, basename='events/previous')
 router.register(r'user_links', views.UserLinkViewSet)   # Test URL
 router.register(r'event_links', views.EventLinkViewSet) # Test URL
 router.register(r'categories', views.CategoryViewSet)   # Test URL
