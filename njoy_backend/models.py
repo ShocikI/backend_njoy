@@ -43,9 +43,6 @@ class Categories(models.Model):
         return f"{self.title}"
     
 
-
-    
-
 class User(AuthUser):
     description = models.TextField(blank=True)
     avatar = models.ImageField(upload_to="images/avatars", blank=True)
