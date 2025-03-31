@@ -16,7 +16,7 @@ class UserForEventSerializers(serializers.HyperlinkedModelSerializer):
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Categories
-        fields = ('title',)
+        fields = ('id', 'title')
 
 class UserLinkSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -29,13 +29,35 @@ class EventLinkSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('type', 'link_url')
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
-    owner = UserForEventSerializers(many=False)
-    category = CategorySerializer(many=False)
-    links = EventLinkSerializer(many=True)
+    owner = UserForEventSerializers(many=False, read_only=True, required=False)
+    category = CategorySerializer(many=False, read_only=True, required=False)
+    links = EventLinkSerializer(many=True, required=False)
+    
+    # Pola do zapisu (przyjmują id)
+    owner_id = serializers.PrimaryKeyRelatedField(
+        write_only=True,
+        queryset=User.objects.all(),
+        source='owner'
+    )
+    category_id = serializers.PrimaryKeyRelatedField(
+        write_only=True,
+        queryset=Categories.objects.all(),
+        source='category'
+    )
 
     class Meta:
         model = Event
-        fields = ("title", "date", "address", "location", "description", "price", "avaliable_places", "owner", "category", "links", "image")
+        fields = (
+            "title", "date", "address", "location", "description", "price",
+            "avaliable_places", "owner", "owner_id", "category", "category_id",
+            "links", "image"
+        )
+
+    def create(self, validated_data):
+        links = validated_data.pop("links", [])
+        event = Event.objects.create(**validated_data)
+        return event
+
 
 class RegistrationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
