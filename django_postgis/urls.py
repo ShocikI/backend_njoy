@@ -21,11 +21,12 @@ from django.conf.urls import include
 from rest_framework.authtoken.views import obtain_auth_token
 
 from njoy_backend import urls
-from django_postgis.views import LoginView, LogoutView
+from django_postgis.views import LoginView, LogoutView, CheckLoginView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(urls)),
     path("login/", LoginView.as_view()),
-    path("logout/", LogoutView.as_view())
+    path("logout/", LogoutView.as_view()),
+    path("login-check/", CheckLoginView.as_view())
 ]
