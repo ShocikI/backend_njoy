@@ -45,7 +45,7 @@ class Categories(models.Model):
 
 class User(AuthUser):
     description = models.TextField(blank=True)
-    avatar = models.ImageField(upload_to="images/avatars", blank=True)
+    avatar = models.ImageField(upload_to="avatars", blank=True)
     links = geoModels.ManyToManyField(UserLink, verbose_name=("Links"), blank=True)
     plus = models.IntegerField(default=0)
     minus = models.IntegerField(default=0)
