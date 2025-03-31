@@ -43,6 +43,9 @@ class Categories(models.Model):
         return f"{self.title}"
     
 
+
+    
+
 class User(AuthUser):
     description = models.TextField(blank=True)
     avatar = models.ImageField(upload_to="images/avatars", blank=True)
@@ -69,7 +72,7 @@ class Event(geoModels.Model):
     location = geoModels.PointField(geography=True, blank=False, null=False)
      
     links = geoModels.ManyToManyField(EventLink, verbose_name=("Links"), blank=True)
-    image = geoModels.ImageField(upload_to="images/posters", height_field=None, width_field=None, max_length=None, blank=True)
+    image = geoModels.ImageField(upload_to="posters", height_field=None, width_field=None, max_length=None, blank=True)
     description = geoModels.TextField(max_length=2048, blank=True)
     price = geoModels.FloatField(default=0.0, blank=True)
     avaliable_places = geoModels.IntegerField(default=0, blank=True)

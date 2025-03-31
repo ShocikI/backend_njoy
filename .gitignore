@@ -1,5 +1,6 @@
 static
 api_static
+public
 env
 **/__pycache__/**
 **/migrations/**

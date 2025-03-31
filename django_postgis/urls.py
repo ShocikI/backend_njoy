@@ -19,6 +19,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from rest_framework.authtoken.views import obtain_auth_token
+from django.conf import settings
+from django.conf.urls.static import static
 
 from njoy_backend import urls
 from django_postgis.views import LoginView, LogoutView, CheckLoginView
@@ -29,4 +31,4 @@ urlpatterns = [
     path("login/", LoginView.as_view()),
     path("logout/", LogoutView.as_view()),
     path("login-check/", CheckLoginView.as_view())
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
