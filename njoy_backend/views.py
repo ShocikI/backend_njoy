@@ -66,27 +66,33 @@ class EventViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        
-        # Assign owner
-        data = request.data.copy()
-        data['owner_id'] = request.user.id
-        data.pop("owner", None)
 
-        # Assing location
-        lat = float(data['location']['latitude'])
-        lng = float(data['location']['longitude'])
-        data['location'] = Point(lng, lat, srid=4326)
+        # Assign location
+        lat = float(request.POST.get('location[latitude]'))
+        lng = float(request.POST.get('location[longitude]'))
         
+        data = {
+            'owner_id': request.user.id,
+            'title': request.POST.get('title'),
+            'category_id': request.POST.get('category'),
+            'address': request.POST.get('address'),
+            'location': Point(lng, lat, srid=4326),
+        }
+
         try:
-            if "date" in data:
-                data["date"] = datetime.strptime(data["date"].replace("Z","+00:00"), "%Y-%m-%dT%H:%M:%S.%f%z") 
+            date = request.POST.get("date")
+            data["date"] = datetime.strptime(date.replace("Z","+00:00"), "%Y-%m-%dT%H:%M:%S.%f%z") 
         except ValueError:
             return Response({"error": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST)
 
-        data['category_id'] = data.pop('category')
-
-        if "image" in data and data['image'] in ['undefined', None]:
-            data.pop("image")
+        if 'description' in data.keys():
+            data['description'] = request.POST.get('description')
+        if 'price' in data.keys():
+            data['price'] = request.POST.get('price')
+        if 'avaliable_places' in data.keys():
+            data['avaliable_places'] = request.POST.get('avaliablePlaces')
+        if 'image' in data.keys() and data['image'] not in ['undefined', None]:
+            data['image'] = request.FILES.get("image")
 
         serializer = EventSerializer(data=data)
         if not serializer.is_valid():
