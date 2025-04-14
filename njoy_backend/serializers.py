@@ -19,10 +19,21 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
         fields = ("id", "title")
 
 class UserLinkSerializer(serializers.HyperlinkedModelSerializer):
-    link_type = LinkTypeSerializer(many=False, required=True)
+    type = LinkTypeSerializer(many=False, read_only=True)
+
+    owner_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, queryset=User.objects.all(), source='owner'
+    )
+    type_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, queryset=LinkType.objects.all(), source='type'
+    )
+
     class Meta:
         model = UserLink
-        fields = ("link_type", "link_url")
+        fields = ("id", "type", "link_url", "owner_id", "type_id")
+
+    def create(self, validated_data):
+        return UserLink.objects.create(**validated_data)
 
 class EventLinkSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
