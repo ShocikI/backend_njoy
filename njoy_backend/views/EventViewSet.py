@@ -8,19 +8,9 @@ from datetime import datetime
 from django_postgis.authentication import EncryptedTokenAuthentication
 
 from njoy_backend.serializers import (
-    RegistrationSerializer, User, 
-    EventSerializer, Event, 
-    CategorySerializer, Categories,
-    LinkTypeSerializer, LinkType, 
-    UserLinkSerializer, UserLink, 
-    EventLinkSerializer, EventLink, 
+    EventSerializer, 
+    Event, 
 )
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    serializer_class = RegistrationSerializer
-    queryset = User.objects.all()
-
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
@@ -101,35 +91,3 @@ class EventViewSet(viewsets.ModelViewSet):
         
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class PreviousEventViewSet(viewsets.ModelViewSet):
-    serializer_class = EventSerializer
-    queryset = Event.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        today = datetime.now()
-        queryset = Event.objects.filter(date__lt=today)
-
-        categoryIds = self.request.query_params.getlist('category')
-        if categoryIds != ['']:
-            queryset = queryset.filter(category__in=categoryIds)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-    
-class LinkTypeViewSet(viewsets.ModelViewSet):
-    serializer_class = LinkTypeSerializer
-    queryset = LinkType.objects.all()
-
-class EventLinkViewSet(viewsets.ModelViewSet):
-    serializer_class = EventLinkSerializer
-    queryset = EventLink.objects.all()
-
-class UserLinkViewSet(viewsets.ModelViewSet):
-    serializer_class = UserLinkSerializer
-    queryset = UserLink.objects.all()
-
-class CategoryViewSet(viewsets.ModelViewSet):
-    serializer_class = CategorySerializer
-    queryset = Categories.objects.all()

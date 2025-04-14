@@ -33,7 +33,7 @@ class LoginView(APIView):
 
 class LogoutView(APIView):
     authentication_classes = [EncryptedTokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         response = Response({"message": "Logged out"}, status=status.HTTP_200_OK)

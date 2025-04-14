@@ -16,16 +16,23 @@ Including another URLconf
 """
 from django.urls import re_path, include
 from rest_framework import routers
-from njoy_backend import views
+from njoy_backend.views.UserViewSet import UserViewSet
+from njoy_backend.views.EventViewSet import EventViewSet
+from njoy_backend.views.PreviousEventViewSet import PreviousEventViewSet
+from njoy_backend.views.UserLinkViewSet import UserLinkViewSet
+from njoy_backend.views.EventLinkViewSet import EventLinkViewSet
+from njoy_backend.views.CategoryViewSet import CategoryViewSet
+from njoy_backend.views.LinkTypeViewSet import LinkTypeViewSet
+
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)            # Test URL
-router.register(r'events', views.EventViewSet, basename="events")
-router.register(r'events/previous', views.PreviousEventViewSet, basename='events/previous')
-router.register(r'user_links', views.UserLinkViewSet)   # Test URL
-router.register(r'event_links', views.EventLinkViewSet) # Test URL
-router.register(r'categories', views.CategoryViewSet)   # Test URL
-router.register(r'link_types', views.LinkTypeViewSet)   # Test URL
+router.register(r'users', UserViewSet, basename="users")
+router.register(r'events', EventViewSet, basename="events")
+router.register(r'events/previous', PreviousEventViewSet, basename='events/previous')
+router.register(r'user_links', UserLinkViewSet)
+router.register(r'event_links', EventLinkViewSet)
+router.register(r'categories', CategoryViewSet)
+router.register(r'link_types', LinkTypeViewSet)
 
 urlpatterns = [
    re_path(r'^', include(router.urls))
