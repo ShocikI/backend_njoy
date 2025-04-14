@@ -45,16 +45,11 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
     category = CategorySerializer(many=False, read_only=True, required=False)
     links = EventLinkSerializer(many=True, required=False)
     
-    # Pola do zapisu (przyjmują id)
     owner_id = serializers.PrimaryKeyRelatedField(
-        write_only=True,
-        queryset=User.objects.all(),
-        source='owner'
+        write_only=True, queryset=User.objects.all(), source='owner'
     )
     category_id = serializers.PrimaryKeyRelatedField(
-        write_only=True,
-        queryset=Categories.objects.all(),
-        source='category'
+        write_only=True, queryset=Categories.objects.all(), source='category'
     )
 
     class Meta:

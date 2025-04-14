@@ -7,10 +7,7 @@ from datetime import datetime
 
 from django_postgis.authentication import EncryptedTokenAuthentication
 
-from njoy_backend.serializers import (
-    EventSerializer, 
-    Event, 
-)
+from njoy_backend.serializers import ( EventSerializer, Event )
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
