@@ -6,7 +6,7 @@ from njoy_backend.models import User, Event, Categories, UserLink, EventLink, Li
 class LinkTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = LinkType
-        fields = '__all__'
+        fields = ("id", "title" )
 
 class UserForEventSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -16,17 +16,29 @@ class UserForEventSerializers(serializers.HyperlinkedModelSerializer):
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Categories
-        fields = ('id', 'title')
+        fields = ("id", "title")
 
 class UserLinkSerializer(serializers.HyperlinkedModelSerializer):
+    link_type = LinkTypeSerializer(many=False, required=True)
     class Meta:
         model = UserLink
-        fields = ('type', 'link_url')
+        fields = ("link_type", "link_url")
 
 class EventLinkSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = EventLink
-        fields = ('type', 'link_url')
+        fields = ("type", "link_url")
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    links = UserLinkSerializer(many=True, required=False)
+
+    class Meta:
+        model = User
+        fields = (
+            "username", "email", "date_joined", 
+            "description", "avatar", "plus", "minus",
+            "links"
+        )
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     owner = UserForEventSerializers(many=False, read_only=True, required=False)

@@ -22,10 +22,8 @@ class UserViewSet(viewsets.ModelViewSet):
         match self.action:
             case 'create':
                 return RegistrationSerializer
-            case 'list':
-                return UserSerializer
             case _:
-                return UserProfileSerializer
+                return UserSerializer
             
     def get_permissions(self):
         match self.action:
