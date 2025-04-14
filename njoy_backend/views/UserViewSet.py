@@ -4,12 +4,7 @@ import os
 
 from django_postgis.authentication import EncryptedTokenAuthentication
 
-from njoy_backend.serializers import (
-    RegistrationSerializer, 
-    UserProfileSerializer, 
-    UserSerializer,
-    User, 
-)
+from njoy_backend.serializers import ( RegistrationSerializer,  UserSerializer, User )
 
 
 class UserViewSet(viewsets.ModelViewSet):
