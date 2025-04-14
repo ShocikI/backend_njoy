@@ -22,7 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
             
     def get_permissions(self):
         match self.action:
-            case 'create' | 'list': 
+            case 'create' | 'list' | 'retrieve': 
                 return [ permissions.AllowAny() ]
             case _:
                 return [ permissions.IsAuthenticated() ]
