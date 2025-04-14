@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import re_path, include
+from django.urls import path, re_path, include
 from rest_framework import routers
 from njoy_backend.views.UserViewSet import UserViewSet
 from njoy_backend.views.EventViewSet import EventViewSet
@@ -23,6 +23,7 @@ from njoy_backend.views.UserLinkViewSet import UserLinkViewSet
 from njoy_backend.views.EventLinkViewSet import EventLinkViewSet
 from njoy_backend.views.CategoryViewSet import CategoryViewSet
 from njoy_backend.views.LinkTypeViewSet import LinkTypeViewSet
+from njoy_backend.views.UserLinksByUsernameView import UserLinkByUsernameView
 
 
 router = routers.DefaultRouter()
@@ -35,5 +36,6 @@ router.register(r'categories', CategoryViewSet)
 router.register(r'link_types', LinkTypeViewSet)
 
 urlpatterns = [
-   re_path(r'^', include(router.urls))
+    re_path(r'^', include(router.urls)),
+    path('users/<str:username>/user_links/', UserLinkByUsernameView.as_view(), name='user-links-by-username'),
 ]
