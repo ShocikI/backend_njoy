@@ -16,22 +16,6 @@ class LinkType(models.Model):
         return f"{self.title}"
     
 
-class UserLink(models.Model):
-    type = models.ForeignKey(LinkType, verbose_name=("Link type"), on_delete=models.CASCADE, blank=False)
-    link_url = models.TextField(default="", blank=False)
-    
-    def __str__(self):
-        return f"{self.type}"
-    
-
-class EventLink(models.Model):
-    type = models.ForeignKey(LinkType, verbose_name=("Link type"), on_delete=models.CASCADE, blank=False)
-    link_url = models.TextField(default="", blank=False)
-    
-    def __str__(self):
-        return f"{self.type}"
-    
-    
 class Categories(models.Model):
     title = models.CharField(max_length=32, blank=False, unique=True)
 
@@ -46,7 +30,6 @@ class Categories(models.Model):
 class User(AuthUser):
     description = models.TextField(blank=True)
     avatar = models.ImageField(upload_to="avatars", blank=True)
-    links = geoModels.ManyToManyField(UserLink, verbose_name=("Links"), blank=True)
     plus = models.IntegerField(default=0)
     minus = models.IntegerField(default=0)
 
@@ -68,7 +51,6 @@ class Event(geoModels.Model):
     address = geoModels.CharField(max_length=255, blank=False)
     location = geoModels.PointField(geography=True, blank=False, null=False)
      
-    links = geoModels.ManyToManyField(EventLink, verbose_name=("Links"), blank=True)
     image = geoModels.ImageField(upload_to="posters", height_field=None, width_field=None, max_length=None, blank=True)
     description = geoModels.TextField(max_length=2048, blank=True)
     price = geoModels.FloatField(default=0.0, blank=True)
@@ -81,3 +63,23 @@ class Event(geoModels.Model):
 
     def __str__(self):
         return f"{self.title}"
+    
+    
+class UserLink(models.Model):
+    type = models.ForeignKey(LinkType, verbose_name=("Link type"), on_delete=models.CASCADE, blank=False)
+    link_url = models.TextField(default="", blank=False)
+    owner = models.ForeignKey(User, verbose_name=("User"), on_delete=models.CASCADE, null=True)
+    
+    def __str__(self):
+        return f"{self.type}"
+    
+
+class EventLink(models.Model):
+    type = models.ForeignKey(LinkType, verbose_name=("Link type"), on_delete=models.CASCADE, blank=False)
+    link_url = models.TextField(default="", blank=False)
+    owner = models.ForeignKey(Event, verbose_name=("Event"), on_delete=models.CASCADE, null=True)
+    
+    def __str__(self):
+        return f"{self.type}"
+    
+    
