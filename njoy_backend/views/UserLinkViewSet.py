@@ -14,16 +14,14 @@ class UserLinkViewSet(viewsets.ModelViewSet):
     queryset = UserLink.objects.all()
         
     def get_queryset(self):
-        username = self.kwargs.get('username')
+        username = self.kwargs.get('username_username')
         if username:
             user = get_object_or_404(User, username=username)
-            return self.queryset.filter(owner=user)
-        return None
-
+            return UserLink.objects.filter(owner=user)
+        return UserLink.objects.none()
+    
     def perform_create(self, serializer):
-        username = self.kwargs.get('username')
-        if username:
-            user = get_object_or_404(User, username=username)
-            serializer.save(owner=user)
-        else:
-            serializer.save(owner=self.request.user)
+        username = self.kwargs.get("username_username")
+        user = get_object_or_404(User, username=username)
+        serializer.save(owner=user)
+
