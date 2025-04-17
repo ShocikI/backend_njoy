@@ -6,14 +6,10 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         
-        if request.method == 'POST':
-            username = view.kwargs.get('username')
-            return request.user.is_authenticated and username == request.user.username
-
-        return True
+        username = view.kwargs.get('username_username')
+        return request.user.is_authenticated and username == request.user.username
     
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        
         return obj.owner == request.user
