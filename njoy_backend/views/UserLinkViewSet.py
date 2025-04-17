@@ -2,7 +2,8 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 
 from django_postgis.authentication import EncryptedTokenAuthentication
-from njoy_backend.serializers import ( UserLinkSerializer, UserLink, User )
+from njoy_backend.serializers import ( UserLinkSerializer )
+from njoy_backend.models import ( UserLink )
 
 class UserLinkViewSet(viewsets.ModelViewSet):
     serializer_class = UserLinkSerializer
