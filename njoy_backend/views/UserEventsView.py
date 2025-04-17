@@ -7,7 +7,7 @@ from njoy_backend.models import Event, User
 from njoy_backend.serializers import EventSerializer
 from django_postgis.authentication import EncryptedTokenAuthentication
 
-class UserEventsViewSet(APIView):
+class UserEventsView(APIView):
     permission_classes = [permissions.AllowAny]
     authentication_classes = [EncryptedTokenAuthentication]
     
