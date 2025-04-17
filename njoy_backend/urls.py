@@ -19,13 +19,14 @@ router.register(r'events/previous', PreviousEventViewSet, basename="events/previ
 router.register(r'link_types', LinkTypeViewSet, basename="link-types")
 router.register(r'categories', CategoryViewSet, basename="categories")
 
-nestedUserRouter = NestedDefaultRouter(router, r'users', lookup='username')
-nestedUserRouter.register(r'links', UserLinkViewSet, basename="user-links")
+users_router = NestedDefaultRouter(router, r'users', lookup='username')
+users_router.register(r'links', UserLinkViewSet, basename="user-links")
 
 router.register(r'event_links', EventLinkViewSet)
 
 urlpatterns = [
     re_path(r'^', include(router.urls)),    
+    re_path(r'^', include(users_router.urls)),
     path('events/<int:pk>/event_links/', EventLinksByIdView.as_view(), name='event-links-by-id'),
     path('users/<str:username>/events/', UserEventsView.as_view(), name='user-events'),
 ]
