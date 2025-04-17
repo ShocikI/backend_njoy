@@ -15,7 +15,7 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
 
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action in ['list', 'retrieve']:
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
 
@@ -50,6 +50,15 @@ class EventViewSet(viewsets.ModelViewSet):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
+    def retrieve(self, request, pk=None):
+        try:
+            queryset = Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Response(None, status.HTTP_404_NOT_FOUND)
+        
+        serializer = self.get_serializer(queryset, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def create(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
