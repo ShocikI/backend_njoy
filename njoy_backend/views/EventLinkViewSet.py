@@ -1,31 +1,26 @@
-from rest_framework import viewsets, permissions, status
-from rest_framework.response import Response
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 from django_postgis.authentication import EncryptedTokenAuthentication
+from njoy_backend.permissions import IsOwnerOrReadOnly
 from njoy_backend.serializers import ( EventLinkSerializer )
-from njoy_backend.models import ( EventLink )
+from njoy_backend.models import ( User, Event, EventLink )
 
 class EventLinkViewSet(viewsets.ModelViewSet):
     serializer_class = EventLinkSerializer
-    authentication_classes = [EncryptedTokenAuthentication]
+    authentication_classes = [ EncryptedTokenAuthentication ]
+    permission_classes = [ IsOwnerOrReadOnly ]
     queryset = EventLink.objects.all()
 
-    def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            return [permissions.IsAuthenticated()]
-        return [permissions.AllowAny()]
+    def get_queryset(self):
+        print(self.kwargs)
+        pk = self.kwargs.get('event_pk')
+        if pk:
+            user = get_object_or_404(Event, pk=pk)
+            return EventLink.objects.filter(owner=user)
+        return EventLink.objects.none()
 
-    def create(self, request, *args, **kwargs):
-        data = request.data.copy()
-        data['owner_id'] = request.user.id
-
-        serializer = self.get_serializer(data=data)
-        if not serializer.is_valid():
-            print(f"[EventLink] Błąd walidacji: {serializer.errors}")
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
     def perform_create(self, serializer):
-        serializer.save()
+        username = self.kwargs.get("username_username")
+        user = get_object_or_404(User, username=username)
+        serializer.save(owner=user)

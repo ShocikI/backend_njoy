@@ -35,19 +35,16 @@ class UserLinkSerializer(serializers.HyperlinkedModelSerializer):
 class EventLinkSerializer(serializers.HyperlinkedModelSerializer):
     type = LinkTypeSerializer(many=False, read_only=True)
 
-    owner_id = serializers.PrimaryKeyRelatedField(
-        write_only=True, queryset=Event.objects.all(), source='owner'
-    )
     type_id = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=LinkType.objects.all(), source='type'
     )
 
     class Meta:
         model = EventLink
-        fields = ("id", "type", "link_url", "owner_id", "type_id")
+        fields = ("id", "type", "link_url", "type_id")
 
     def create(self, validated_data):
-        return UserLink.objects.create(**validated_data)
+        return EventLink.objects.create(**validated_data)
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     links = UserLinkSerializer(many=True, required=False)

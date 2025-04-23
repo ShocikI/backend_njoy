@@ -9,7 +9,6 @@ from njoy_backend.views.EventLinkViewSet import EventLinkViewSet
 from njoy_backend.views.CategoryViewSet import CategoryViewSet
 from njoy_backend.views.LinkTypeViewSet import LinkTypeViewSet
 from njoy_backend.views.UserEventsView import UserEventsView
-from njoy_backend.views.EventLinksByIdView import EventLinksByIdView
 
 
 router = DefaultRouter()
@@ -22,11 +21,12 @@ router.register(r'categories', CategoryViewSet, basename="categories")
 users_router = NestedDefaultRouter(router, r'users', lookup='username')
 users_router.register(r'links', UserLinkViewSet, basename="user-links")
 
-router.register(r'event_links', EventLinkViewSet)
+events_router = NestedDefaultRouter(router, r'events', lookup='event')
+events_router.register(r'links', EventLinkViewSet, basename='event_links')
 
 urlpatterns = [
     re_path(r'^', include(router.urls)),    
     re_path(r'^', include(users_router.urls)),
-    path('events/<int:pk>/event_links/', EventLinksByIdView.as_view(), name='event-links-by-id'),
+    re_path(r'^', include(events_router.urls)),
     path('users/<str:username>/events/', UserEventsView.as_view(), name='user-events'),
 ]
