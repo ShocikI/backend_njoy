@@ -13,7 +13,6 @@ class EventLinkViewSet(viewsets.ModelViewSet):
     queryset = EventLink.objects.all()
 
     def get_queryset(self):
-        print(self.kwargs)
         pk = self.kwargs.get('event_pk')
         if pk:
             user = get_object_or_404(Event, pk=pk)
