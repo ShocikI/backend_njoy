@@ -68,7 +68,7 @@ class Event(geoModels.Model):
 class UserLink(models.Model):
     type = models.ForeignKey(LinkType, verbose_name=("Link type"), on_delete=models.CASCADE, blank=False)
     link_url = models.TextField(default="", blank=False)
-    owner = models.ForeignKey(User, verbose_name=("User"), on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, verbose_name=("User"), on_delete=models.CASCADE, null=True, related_name="links")
     
     def __str__(self):
         return f"{self.type}"
@@ -77,7 +77,7 @@ class UserLink(models.Model):
 class EventLink(models.Model):
     type = models.ForeignKey(LinkType, verbose_name=("Link type"), on_delete=models.CASCADE, blank=False)
     link_url = models.TextField(default="", blank=False)
-    owner = models.ForeignKey(Event, verbose_name=("Event"), on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(Event, verbose_name=("Event"), on_delete=models.CASCADE, null=True, related_name="links")
     
     def __str__(self):
         return f"{self.type}"
