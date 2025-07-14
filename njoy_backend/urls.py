@@ -3,7 +3,6 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_nested.routers import NestedDefaultRouter
 from njoy_backend.views.UserViewSet import UserViewSet
 from njoy_backend.views.EventViewSet import EventViewSet
-from njoy_backend.views.PreviousEventViewSet import PreviousEventViewSet
 from njoy_backend.views.UserLinkViewSet import UserLinkViewSet
 from njoy_backend.views.EventLinkViewSet import EventLinkViewSet
 from njoy_backend.views.CategoryViewSet import CategoryViewSet
