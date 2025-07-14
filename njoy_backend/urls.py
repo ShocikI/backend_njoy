@@ -14,7 +14,6 @@ from njoy_backend.views.UserEventsView import UserEventsView
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename="users")
 router.register(r'events', EventViewSet, basename="events")
-router.register(r'events/previous', PreviousEventViewSet, basename="events/previous")
 router.register(r'link_types', LinkTypeViewSet, basename="link-types")
 router.register(r'categories', CategoryViewSet, basename="categories")
 
