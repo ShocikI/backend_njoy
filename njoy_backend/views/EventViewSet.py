@@ -81,14 +81,15 @@ class EventViewSet(viewsets.ModelViewSet):
         except ValueError:
             return Response({"error": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if 'description' in data.keys():
-            data['description'] = request.POST.get('description')
-        if 'price' in data.keys():
-            data['price'] = request.POST.get('price')
-        if 'avaliable_places' in data.keys():
-            data['avaliable_places'] = request.POST.get('avaliablePlaces')
-        if 'image' in data.keys() and data['image'] not in ['undefined', None]:
-            data['image'] = request.FILES.get("image")
+        if description := request.POST.get('description'):
+            data['description'] = description
+        if price := request.POST.get('price'):
+            data['price'] = price
+        if aval_places := request.POST.get('avaliable_places'):
+            data['avaliable_places'] = aval_places
+        if image := request.FILES.get('image'):
+            if image not in ['undefined', None]:
+                data['image'] = image
 
         serializer = EventSerializer(data=data)
         if not serializer.is_valid():
