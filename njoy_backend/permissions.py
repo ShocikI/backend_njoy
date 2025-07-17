@@ -9,7 +9,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         
-        username = view.kwargs.get('username')
+        username = view.kwargs.get('username_username')
         return (
             request.user.is_authenticated 
             and username == request.user.username
