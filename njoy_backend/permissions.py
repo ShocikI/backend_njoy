@@ -15,11 +15,11 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             and username == request.user.username
         )
     
-    
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.owner == request.user
+
 
 class IsEventOwnerOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -36,4 +36,4 @@ class IsEventOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.event.owner == request.user
+        return obj.owner.owner == request.user
