@@ -62,7 +62,7 @@ class Event(geoModels.Model):
         verbose_name_plural = ("Events")
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.title} - {self.date}"
     
     
 class UserLink(models.Model):
@@ -71,7 +71,7 @@ class UserLink(models.Model):
     owner = models.ForeignKey(User, verbose_name=("User"), on_delete=models.CASCADE, null=True, related_name="links")
     
     def __str__(self):
-        return f"{self.type}"
+        return f"{self.type} - {self.owner}"
     
 
 class EventLink(models.Model):
@@ -80,6 +80,6 @@ class EventLink(models.Model):
     owner = models.ForeignKey(Event, verbose_name=("Event"), on_delete=models.CASCADE, null=True, related_name="links")
     
     def __str__(self):
-        return f"{self.type}"
+        return f"{self.type} - {self.owner}"
     
     
